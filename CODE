@@ -1,0 +1,33 @@
+from textblob import TextBlob
+import pandas as pd
+
+# Sample dataset
+data = {
+    'text': ["I love this product! It's amazing!",
+             "The customer service was terrible.",
+             "Our new campaign is getting a lot of positive feedback!",
+             "I'm not sure about this company's ethics.",
+             "The new feature is really cool."]
+}
+# Load data into DataFrame
+df = pd.DataFrame(data)
+# Function to get sentiment polarity
+def get_sentiment(text):
+    analysis = TextBlob(text)
+    # Return polarity (-1 to 1), where < 0 is negative, > 0 is positive, and 0 is neutral
+    return analysis.sentiment.polarity
+# Apply sentiment analysis to each row
+df['sentiment'] = df['text'].apply(get_sentiment)
+# Classify sentiment
+def classify_sentiment(polarity):
+    if polarity > 0:
+        return 'Positive'
+    elif polarity < 0:
+        return 'Negative'
+    else:
+        return 'Neutral'
+# Add sentiment classification
+df['sentiment_classification'] = df['sentiment'].apply(classify_sentiment)
+
+# Output the DataFrame with sentiment analysis
+print(df)
